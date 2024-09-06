@@ -13,11 +13,6 @@
 
    You should have received a copy of the GNU Affero General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-   The original script created by (daniela.petruzalek@gmail.com) which can be downloaded from 
-   (https://github.com/danicat/read.dbc/blob/master/src/dbc2dbf.c), was originally developed for reading .dbc files into .dbf files 
-   in R programming language. This however was adapted to execute the same function in Julia programming. 
-   Adaptations were made for error handling, and some parameters were removed or changed.
 */
 
 /*
@@ -27,18 +22,13 @@
     This program decompresses .dbc files to .dbf. This code is based on the work
     of Mark Adler <madler@alumni.caltech.edu> (zlib/blast) and Pablo Fonseca
     (https://github.com/eaglebh/blast-dbf).
- 
-    
-*/
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
-/*#include <unistd.h>*/
 #include <string.h>
 #include <errno.h>
 #include <stdint.h>
-/*#include <R.h>    was created to run in R, this was removed to make the code suitable for julia */  
-
 #include "blast.h"
 
 #define CHUNK 4096
@@ -122,4 +112,19 @@ int dbc2dbf(const char* input_filename, const char* output_filename) {
     return 0; // Success
 }
 
-/*Refere to original script at (https://github.com/danicat/read.dbc/blob/master/src/dbc2dbf.c)*/
+/* Entry point for the program */
+int main(int argc, char **argv) {
+    if (argc != 3) {
+        fprintf(stderr, "Usage: %s <input.dbc> <output.dbf>\n", argv[0]);
+        return 1;
+    }
+
+    int result = dbc2dbf(argv[1], argv[2]);
+    if (result == 0) {
+        printf("Decompression successful: %s -> %s\n", argv[1], argv[2]);
+    } else {
+        fprintf(stderr, "Decompression failed for %s -> %s\n", argv[1], argv[2]);
+    }
+
+    return result;
+}

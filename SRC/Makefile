@@ -1,7 +1,12 @@
 # Variables
 CC = gcc            # The C compiler to use
 CFLAGS = -Wall -g   # Compiler flags for warnings and debugging
-LDFLAGS =           # Linker flags (no external libraries required)
+LDFLAGS =           # Linker flags
+
+# Check if we're cross-compiling for Windows (mingw)
+ifeq ($(findstring mingw,$(TARGET)),mingw)
+    LDFLAGS += -no-undefined
+endif
 
 # Target executable
 TARGET = dbc2dbf
@@ -15,15 +20,20 @@ all: $(TARGET)
 
 # Build the target
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET) $(LDFLAGS)
 
 # Compile C source files into object files
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Run the test (You can adapt this to your actual test inputs/outputs)
+# Run the test using ABOAC1909.dbc and ABOAC1909.dbf in the current directory
 test: $(TARGET)
-	./$(TARGET) ABOAC1909.dbc ABOAC1909.dbf  # Replace with actual input and output file names
+	@if [ -f "ABOAC1909.dbc" ]; then \
+		./$(TARGET) "ABOAC1909.dbc" "ABOAC1909.dbf"; \
+		echo "Test completed. Output written to ABOAC1909.dbf."; \
+	else \
+		echo "Error: ABOAC1909.dbc not found."; \
+	fi
 
 # Clean up build files
 clean:
