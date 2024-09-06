@@ -1,5 +1,8 @@
-all:
-	-@echo "Please use ./configure first.  Thank you."
+blast-dbf: blast-dbf.c blast.c blast.h
+	cc -o blast-dbf blast.c blast-dbf.c
 
-distclean:
-	make -f Makefile.in distclean
+test: blast-dbf
+	./blast-dbf < sids.dbc | cmp - sids.dbf
+
+clean:
+	rm -f blast-dbf *.o
