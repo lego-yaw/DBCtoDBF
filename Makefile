@@ -1,8 +1,8 @@
-blast-dbf: blast-dbf.c blast.c blast.h
-	cc -o blast-dbf blast.c blast-dbf.c
+dbc2dbf: blast-dbf.c blast.c blast.h
+	cc -o dbc2dbf blast.c blast-dbf.c
 
-test: blast-dbf
-	./blast-dbf < sids.dbc | cmp - sids.dbf
+test: dbc2dbf
+	./dbc2dbf < ABOAC1909.dbc | cmp - ABOAC1909.dbf
 
 clean:
-	rm -f blast-dbf *.o
+	rm -f dbc2dbf*.o
