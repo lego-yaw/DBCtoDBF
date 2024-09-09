@@ -6,7 +6,9 @@
 ```
 >>> using Pkg
 >>> Pkg.add("DBCtoDBF_jll")
->>> ccall(dbc2dbf)   ##  use ccall to add rapper function to function
+>>> using DBCtoDBF_jll
+>>> exe_path = dcb2dbf()
+>>> run(`$exe_path $input_file $output_file`) # input_file = file.dbc  # output_file = file.dbF
 ```
 
 # NOTE
